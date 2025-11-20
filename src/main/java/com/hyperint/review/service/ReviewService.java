@@ -21,6 +21,8 @@ public class ReviewService {
 
     public String handleMessage(String from,String body){
         UserSession userSession=session.getOrDefault(from,new UserSession());
+        session.put(from, userSession);
+
         switch(userSession.getStep()){
             case 0: userSession.setStep(1);
                     return "Which product is this review for?";
@@ -42,6 +44,7 @@ public class ReviewService {
     public void saveReview(UserSession userSession,String from){
         Review reviews=new Review();
         reviews.setProduct_name(userSession.getProduct_name());
+        reviews.setUser_name(userSession.getUser_name());
         reviews.setContact_number(from);
         reviews.setProduct_review(userSession.getProduct_review());
         reviews.setCreated_at(LocalDateTime.now());
